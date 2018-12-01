@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="search_wrapper">
+        <h2 class="search_title">Market Explorer</h2>
+        <div id="request_ajax_update" class="search_status">
+          <%= form_with method: :get, url: pages_search_path do |form| %>
+            <div class="search_status_target_title"><%= form.label("検索サイト") %></div>
+            <div class="search_status_target">
+              <%= check_box_tag "target_flema", true, true, {:class => "target_flema_all"}  %>
+              <%= label_tag("target_flema", 'フリマサイトを全チェック', class:"target_text") %>
+              <div class="search_status_target_flema">
+                <span class="target_check_box">
+                  <%= check_box_tag "yahoo", true, true, {:class => "target_flema"}  %><%= label_tag("yahoo", 'ヤフオク', class:"target_text") %>
+                </span>
+                <span class="target_check_box">
+                  <%= check_box_tag "mercari", true, true, {:class => "target_flema"}  %><%= label_tag("mercari", 'メルカリ', class:"target_text") %>
+                </span>
+                <span class="target_check_box">
+                  <%= check_box_tag "jimoty", true, true, {:class => "target_flema"}  %><%= label_tag("jimoty", 'ジモティー', class:"target_text") %>
+                </span>
+                <span class="target_check_box">
+                  <%= check_box_tag "rakuma", true, true, {:class => "target_flema"}  %><%= label_tag("rakuma", 'ラクマ', class:"target_text") %>
+                </span>
+              </div>
+              <%= check_box_tag "target_used", true, true, {:class => "target_used_all"}  %>
+              <%= label_tag("target_used", '中古市場を全チェック', class:"target_text") %>
+              <div class="search_status_target_used">
+                <span class="target_check_box">
+                  <%= check_box_tag "rakuten", true, true, {:class => "target_used"}  %><%= label_tag("rakuten", '楽天市場', class:"target_text") %>
+                </span>
+                <span class="target_check_box">
+                  <%= check_box_tag "hardoff", true, true, {:class => "target_used"}  %><%= label_tag("hardoff", 'HardOff', class:"target_text") %>
+                </span>
+                <span class="target_check_box">
+                  <%= check_box_tag "wowma", true, true, {:class => "target_used"}  %><%= label_tag("wowma", 'Wowma!', class:"target_text") %>
+                </span>
+              </div>
+            </div>
+            <div class="search_status_keyword_title"><%= form.label("検索ワード") %></div>
+            <div class="search_status_keyword">
+              <%= form.text_field :keyword , class: 'keyword_text_field'%><br>
+            </div>
+            <div class="search_status_select">
+              <div class="search_status_conditions">
+                <%= form.select :conditions_selected, {値段が安い順:0,値段が高い順:1}, {}, class: 'selections_conditions_box' %>を
+              </div>
+              <div class="search_status_selections">
+                <%= form.select :sort_selected, {全ての商品:0,販売中の商品:1,売切れの商品:2}, {}, class: 'selections_select_box' %>で表示
+              </div>
+              <div class="search_status_price">
+                <%= form.label("上限金額") %>
+                <%= form.select :price_selected, {なし:0,１０００円:1,３０００円:2,５０００円:3,１００００円:4,３００００円:5,５００００円:6,１０００００円:7}, {}, class: 'selections_price_box' %>
+              </div>
+            </div>
+            <div class="search_status_search_btn">
+              <%= form.submit("検索する", class: "search_btn", data: { disable_with: '検索中...' } ) %>
+              <div class="js-loading"><%= image_tag "loading.gif", class: "loading_icon" %></div>
+            </div>
+          <% end %>
+        </div>
+        <span class="search_bikou">チェックされているサイトより、<br>最大４０〜６０件の情報を抽出し統合します。</span>
+      </div>
+    </div>
+
+    <div class="smartphone_nav hidden dispnone_nav" ontouchstart="">
+      <div class="smartphone_nav_bar_top"></div>
+      <div class="smartphone_nav_bar_center"></div>
+      <div class="smartphone_nav_bar_bottom"></div>
+    </div>
+
+    <div class="move_top hidden" ontouchstart=""></div>
+
+    <div class="disabled_wrapper">
+      <div id="updated_by_ajax" >
+    </div>
+
+  </div>
+</div>

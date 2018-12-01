@@ -1,0 +1,70 @@
+<div class="col-md-8">
+  <div class="product_wrapper">
+    <div class="count_result">
+      <div class="flema_count">
+        <% if result_count.has_key?("yahoo") %>
+          <span class="count_text">ヤフオク　：<%= result_count["yahoo"] %>件</span>
+        <% else %>
+          <span class="count_zero">ヤフオク　：０件</span>
+        <% end %>
+        <% if result_count.has_key?("mercari") %>
+          <span class="count_text">メルカリ　：<%= result_count["mercari"] %>件</span>
+        <% else %>
+          <span class="count_zero">メルカリ　：０件</span>
+        <% end %>
+        <% if result_count.has_key?("jimoty") %>
+          <span class="count_text">ジモティー：<%= result_count["jimoty"] %>件</span>
+        <% else %>
+          <span class="count_zero">ジモティー：０件</span>
+        <% end %>
+        <% if result_count.has_key?("rakuma") %>
+          <span class="count_text">ラクマ　　：<%= result_count["rakuma"] %>件</span>
+        <% else %>
+          <span class="count_zero">ラクマ　　：０件</span>
+        <% end %>
+      </div>
+      <div class="used_count">
+        <% if result_count.has_key?("rakuten") %>
+          <span class="count_text">楽天市場：<%= result_count["rakuten"] %>件</span>
+        <% else %>
+          <span class="count_zero">楽天市場：０件</span>
+        <% end %>
+        <% if result_count.has_key?("hardoff") %>
+          <span class="count_text">HardOff ：<%= result_count["hardoff"] %>件</span>
+        <% else %>
+          <span class="count_zero">HardOff ：０件</span>
+        <% end %>
+        <% if result_count.has_key?("wowma") %>
+          <span class="count_text">Wowma!  ：<%= result_count["wowma"] %>件</span>
+        <% else %>
+          <span class="count_zero">Wowma!  ：０件</span>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="products">
+      <% result_all.each do |result| %>
+      <div class="product_item">
+        <div class="product_item_img relative">
+          <%= link_to result["link"], target: "_blank" do %>
+            <%= image_tag result["img"], class:"image", alt:"No Image" %>
+            <% if result["sold_out"] %>
+              <%= image_tag "sold_out.png", class:"sold_out_icon absolute"%>
+            <% end %>
+            <%= image_tag "black.png", class:"image_black absolute"%>
+          <% end %>
+          <div class="product_item_price absolute"><span class="product_item_price_text"><%= result["price"] %></span><br>
+            <% if result["sold_out"] %>
+              <span class="product_item_price_sold_out">売り切れ</span>
+            <% end %>
+          </div>
+        </div>
+        <div class="product_item_name"><span class="product_item_name_text"><%= result["name"] %></span></div>
+        <%= link_to result["link"], target: "_blank" do %>
+          <div class="product_item_target"><span class="product_item_target_text"><%= result["target"] %></span></div>
+        <% end %>
+        <br>
+      </div>
+    <% end %>
+    </div>
+  </div>
