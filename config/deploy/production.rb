@@ -7,11 +7,6 @@
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
-# EC2サーバーのIP、EC2サーバーにログインするユーザー名、サーバーのロールを記述
-server '52.197.90.249', user: 'hirasho', roles: %w{app db web}
-
-#デプロイするサーバーにsshログインする鍵の情報を記述
-set :ssh_options, keys: '~/.ssh/aws_git_rsa' 
 
 # role-based syntax
 # ==================
@@ -63,3 +58,9 @@ set :ssh_options, keys: '~/.ssh/aws_git_rsa'
 #     auth_methods: %w(publickey password)
 #     # password: "please use keys"
 #   }
+
+# EC2サーバーのIP、EC2サーバーにログインするユーザー名、サーバーのロールを記述
+server '52.197.90.249', user: 'hirasho', roles: %w{app db web}
+
+#デプロイするサーバーにsshログインする鍵の情報を記述
+set :ssh_options, keys: '~/.ssh/aws_git_rsa' 
