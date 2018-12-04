@@ -1,6 +1,7 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.11.0"
 
+set :ssh_options, :port => "10022"
 set :application, "Market_Explorer"
 set :repo_url, "git@github.com:hirasyo/Market_Explorer.git"
 
