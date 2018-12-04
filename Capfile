@@ -1,5 +1,3 @@
-set :ssh_options, :port => "10022"
-
 require 'capistrano/setup'
 require 'capistrano/deploy'
 require "capistrano/scm/git"
