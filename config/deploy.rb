@@ -5,7 +5,7 @@ set :application, "Market_Explorer"
 set :repo_url, "git@github.com:hirasyo/Market_Explorer.git"
 
 set :branch, 'master'
-set :deploy_to, '/var/www/Market_Explorer/current'
+set :deploy_to, '/var/www/Market_Explorer'
 
 # シンボリックリンクをはるファイル。(※後述)
 set :linked_files, fetch(:linked_files, []).push('config/settings.yml')
