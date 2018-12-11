@@ -22,7 +22,7 @@ set :rbenv_ruby, '2.4.1'
 #出力するログのレベル。
 set :log_level, :debug
 
-set :bundle_binstubs, -> { shared_path.join('bin') }
+set :bundle_binstubs, -> { '/var/www/Market_Explorer/current/shared'.join('bin') }
 
 namespace :deploy do
   desc 'Restart application'
