@@ -40,4 +40,4 @@
     defined?(ActiveRecord::Base) and ActiveRecord::Base.establish_connection
   end
 
-  Unicorn::HttpServer::START_CTX[0] = File.join($app_dir, 'shared/bin/unicorn')
+  Unicorn::HttpServer::START_CTX[0] = File.join('/var/www/Market_Explorer/shared/bin/unicorn')
