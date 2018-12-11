@@ -39,3 +39,5 @@
 #  after_fork do |server, worker|
 #    defined?(ActiveRecord::Base) and ActiveRecord::Base.establish_connection
 #  end
+
+Unicorn::HttpServer::START_CTX[0] = File.join($app_dir, 'shared/bin/unicorn')
