@@ -14,7 +14,7 @@ set :linked_files, fetch(:linked_files, []).push('config/settings.yml')
 set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
 
 # 保持するバージョンの個数(※後述)
-set :keep_releases, 1
+set :keep_releases, 3
 
 # rubyのバージョン
 set :rbenv_ruby, '2.4.1'

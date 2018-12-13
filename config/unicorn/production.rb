@@ -5,7 +5,7 @@
 #自分のアプリケーション名、currentがつくことに注意。
   $app_dir = "/var/www/Market_Explorer/current"
 #リクエストを受け取るポート番号を指定。後述
-  $listen  = File.expand_path 'tmp/sockets/.unicorn.sock', $app_dir
+  $listen  = File.expand_path 'tmp/sockets/unicorn.sock', $app_dir
 #PIDの管理ファイルディレクトリ
   $pid     = File.expand_path 'tmp/pids/unicorn.pid', $app_dir
 #エラーログを吐き出すファイルのディレクトリ
@@ -23,11 +23,16 @@
 #ホットデプロイをするかしないかを設定
   preload_app true
 
+#Gemfileの設定が必要そう
+  before_exec do |server|
+    ENV['BUNDLE_GEMFILE'] = "#{working_directory}/Gemfile"
+  end
+
 #fork前に行うことを定義。後述
   before_fork do |server, worker|
     defined?(ActiveRecord::Base) and ActiveRecord::Base.connection.disconnect!
     old_pid = "#{server.config[:pid]}.oldbin"
-    if old_pid != server.pid && File.exists?(old_pid)
+    if server.pid != old_pid && File.exists?(old_pid)
       begin
         Process.kill "QUIT", File.read(old_pid).to_i
       rescue Errno::ENOENT, Errno::ESRCH
