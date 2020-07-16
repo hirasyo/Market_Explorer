@@ -34,10 +34,12 @@
         <% else %>
           <span class="count_zero">HardOff ：０件</span>
         <% end %>
+        <% if false %>
         <% if result_count.has_key?("wowma") %>
           <span class="count_text">Wowma!  ：<%= result_count["wowma"] %>件</span>
         <% else %>
           <span class="count_zero">Wowma!  ：０件</span>
+        <% end %>
         <% end %>
       </div>
     </div>

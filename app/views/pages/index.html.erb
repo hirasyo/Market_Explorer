@@ -14,7 +14,7 @@
                   <%= check_box_tag "yahoo", true, true, {:class => "target_flema"}  %><%= label_tag("yahoo", 'ヤフオク', class:"target_text") %>
                 </span>
                 <span class="target_check_box">
-                  <%= check_box_tag "mercari", true, false,{:class => "target_flema"}  %><%= label_tag("mercari", 'メルカリ', class:"target_text") %>
+                  <%= check_box_tag "mercari", true, true,{:class => "target_flema"}  %><%= label_tag("mercari", 'メルカリ', class:"target_text") %>
                 </span>
                 <span class="target_check_box">
                   <%= check_box_tag "jimoty", true, true, {:class => "target_flema"}  %><%= label_tag("jimoty", 'ジモティー', class:"target_text") %>
@@ -32,9 +32,11 @@
                 <span class="target_check_box">
                   <%= check_box_tag "hardoff", true, true, {:class => "target_used"}  %><%= label_tag("hardoff", 'HardOff', class:"target_text") %>
                 </span>
+                <% if false %>
                 <span class="target_check_box">
                   <%= check_box_tag "wowma", true, true, {:class => "target_used"}  %><%= label_tag("wowma", 'Wowma!', class:"target_text") %>
                 </span>
+                <% end %>
               </div>
             </div>
             <div class="search_status_keyword_title"><%= form.label("検索ワード") %></div>

@@ -72,6 +72,8 @@ class PagesController < ApplicationController
       @html = search_html_wowma(url_wowma(params[:keyword]))
       # 抽出したhtmlをパース(解析)してオブジェクトを作成
       @result_wowma = Nokogiri::HTML.parse(@html,nil, 'utf-8')
+      logger.debug(@result_wowma)
+      logger.debug("Wowmaのリザルト")
       # 解析オブジェクトから必要な情報を抽出
       get_info_wowma(@result_wowma)
 
@@ -112,7 +114,7 @@ class PagesController < ApplicationController
     end
 
     def url_wowma(keyword)
-      "https://wowma.jp/bep/m/klist3?e_scope=O&at=FP&non_gr=ex&spe_id=c_act_sc01&e=tsrc_topa_v&keyword=#{keyword}&sort1=start%2CD&ipp=50"
+      "https://wowma.jp/itemlist?e_scope=O&at=FP&non_gr=ex&spe_id=c_act_sc01&e=tsrc_topa_v&ipp=40&keyword=#{keyword}&categ_id=80"
     end
 
 #    def url_daikokuya(keyword)
@@ -340,7 +342,10 @@ class PagesController < ApplicationController
 
         result.xpath('//div[@class="p-goods__item p-goods__item--with-cart-btn"]').each do |node|
 
-          sale_now = !node.css('ul.p-goods__status').present?  #このCSSセレクタがヒットする商品は売り切れている = ヒットしない商品は販売中（sale now!）
+          # 今（20200716）は下記のCSSポインタは新着かどうかをみるのに使うっぽい？
+          # とりあえず全部売っていることにしよう
+          # sale_now = !node.css('ul.p-goods__status').present?  #このCSSセレクタがヒットする商品は売り切れている = ヒットしない商品は販売中（sale now!）
+          sale_now = true;
           price_only_number = node.css('p.p-goods__price').inner_text.gsub(/\n|\¥|\,|\s|円/,"") #数値だけのお値段
           # 画面上の条件指定と合致するもののみ表示対象とする
           data_jugde(sale_now, price_only_number)
@@ -370,29 +375,26 @@ class PagesController < ApplicationController
 
     end
 
+    # Wowmaは直接ページで検索しないと結果が０件になるみたい？検索対象から外す
     def get_info_wowma(result)
       get_count = 0
       pre_url = "https://wowma.jp"
 #      products_none = result.xpath('').present? #何か指定するとエラー。。。意味わからん
 #      unless products_none
 
-        result.xpath('//li/div[@class="rankNum"]/..').each do |node|
+        result.xpath('//div[@class="searchListingItems "]/ul').each do |node|
 
           sale_now = true
-          price_only_number = node.css('span.price').inner_text.gsub(/\n|\¥|\,|\s|円/,"") #数値だけのお値段
+          price_only_number = node.css('p.price').inner_text.gsub(/\n|\¥|\,|\s|円/,"") #数値だけのお値段
           # 画面上の条件指定と合致するもののみ表示対象とする
           data_jugde(sale_now, price_only_number)
           if @get_info_this_data
             @temp_result = {}
             # 各種情報の取得
             @temp_result.store("img", node.css('img').attribute('src').value)
-            if node.css('a.js-item-comparable').present?
-              @temp_result.store("link", pre_url + node.css('a').attribute('href').value)
-            else
-              @temp_result.store("link", node.css('a').attribute('href').value)
-            end
-            @temp_result.store("name", node.css('span.name').inner_text)
-            @temp_result.store("price", node.css('span.price').inner_text.gsub(/\n|\¥|\s|円|\(|税込|\)|送料無料/,"") + "円")
+            @temp_result.store("link", node.css('a').attribute('href').value)
+            @temp_result.store("name", node.css('p.productName').inner_text)
+            @temp_result.store("price", node.css('p.price').inner_text.gsub(/\n|\¥|\s|円|\(|税込|\)|送料無料/,"") + "円")
             @temp_result.store("target", "Wowma!")
             # 品切れか否か
             if sale_now
