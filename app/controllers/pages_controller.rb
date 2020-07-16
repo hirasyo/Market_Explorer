@@ -87,7 +87,7 @@ class PagesController < ApplicationController
   private
 
     def url_yahoo(keyword)
-      "https://auctions.yahoo.co.jp/search/search?p=#{keyword}&va=#{keyword}&fixed=1&ei=utf-8&n=50"
+      "https://auctions.yahoo.co.jp/search/search?p=#{keyword}"
     end
 
     def url_mercari(keyword)
@@ -136,7 +136,9 @@ class PagesController < ApplicationController
       opt['Accept-Encoding'] = 'deflate'
       opt['Accept-Language'] = 'ja,en-US;q=0.9,en;q=0.8'
       search_url = URI.encode url
-      html = open(search_url, opt)# htmlを読み込んで変数htmlに渡す
+      html = open(search_url, opt) do |f|# htmlを読み込んで変数htmlに渡す
+        f.read
+      end
       return html
     end
 
@@ -160,10 +162,10 @@ class PagesController < ApplicationController
     def get_info_yahoo(result)
       get_count = 0
 
-      result.xpath('//div[@id="list01"]/table/tr/td[@class="i"]/..').each do |node|
-
+      result.xpath('//div[@class="Products__list"]/ul/li[@class="Product"]').each do |node|
+        
         sale_now = true
-        price_only_number = node.css('td.pr2').inner_text.gsub(/\¥|\,|\s|円|値下げ交渉あり/,"") #数値だけのお値段
+        price_only_number = node.css('span.u-textRed').inner_text.gsub(/\¥|\,|\s|円/,"") #数値だけのお値段
         # 画面上の条件指定と合致するもののみ表示対象とする
         data_jugde(sale_now, price_only_number)
         if @get_info_this_data
@@ -172,7 +174,7 @@ class PagesController < ApplicationController
           @temp_result.store("img", node.css('img').attribute('src').value)
           @temp_result.store("link", node.css('a').attribute('href').value)
           @temp_result.store("name", node.css('h3').inner_text)
-          @temp_result.store("price", node.css('td.pr2').inner_text.gsub(/\¥|\s|値下げ交渉あり/,""))
+          @temp_result.store("price", node.css('span.u-textRed').inner_text.gsub(/\¥|\s/,""))
           @temp_result.store("target", "ヤフオク")
           @temp_result.store("sold_out", false)
 
@@ -225,22 +227,24 @@ class PagesController < ApplicationController
 
     def get_info_jimoty(result)
       get_count = 0
-      products_none = result.xpath('//div[@id="not_found_condition"]').present?
-      unless products_none #商品がない場合は余計な解析を行わないようにする
 
-        result.xpath('//li[@class="position_relative"]').each do |node|
+      # products_none = result.xpath('//div[@id="not_found_condition"]').present?
+      # unless products_none #商品がない場合は余計な解析を行わないようにする
+
+        result.xpath('//div[@class="p-articles-list js-articles-list"]/ul/li').each do |node|
 
           sale_now = !node.css('img.close').present?  #このCSSセレクタがヒットする商品は売り切れている = ヒットしない商品は販売中（sale now!）
-          price_only_number = node.css('b').inner_text.gsub(/\n|\¥|\,|\s|円/,"") #数値だけのお値段
+          price_only_number = node.css('div[@class="p-item-most-important"]').inner_text.gsub(/\n|\¥|\,|\s|円/,"") #数値だけのお値段
           # 画面上の条件指定と合致するもののみ表示対象とする
           data_jugde(sale_now, price_only_number)
+
           if @get_info_this_data
             @temp_result = {}
             # 各種情報の取得
             @temp_result.store("img", node.css('img').attribute('src').value)
             @temp_result.store("link", node.css('a').attribute('href').value)
-            @temp_result.store("name", node.css('h3').inner_text.gsub(/\n/,""))
-            @temp_result.store("price", node.css('b').inner_text.gsub(/\n/,""))
+            @temp_result.store("name", node.css('h2').inner_text.gsub(/\n/,""))
+            @temp_result.store("price", node.css('div[@class="p-item-most-important"]').inner_text.gsub(/\n/,""))
             @temp_result.store("target", "ジモティー")
             # 品切れか否か
             if sale_now
@@ -255,7 +259,7 @@ class PagesController < ApplicationController
             get_count += 1
           end
         end
-      end
+      # end
       @result_count.store("jimoty",get_count)
 
     end

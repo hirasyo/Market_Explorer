@@ -14,7 +14,7 @@
                   <%= check_box_tag "yahoo", true, true, {:class => "target_flema"}  %><%= label_tag("yahoo", 'ヤフオク', class:"target_text") %>
                 </span>
                 <span class="target_check_box">
-                  <%= check_box_tag "mercari", true, true, {:class => "target_flema"}  %><%= label_tag("mercari", 'メルカリ', class:"target_text") %>
+                  <%= check_box_tag "mercari", true, false,{:class => "target_flema"}  %><%= label_tag("mercari", 'メルカリ', class:"target_text") %>
                 </span>
                 <span class="target_check_box">
                   <%= check_box_tag "jimoty", true, true, {:class => "target_flema"}  %><%= label_tag("jimoty", 'ジモティー', class:"target_text") %>
@@ -43,10 +43,10 @@
             </div>
             <div class="search_status_select">
               <div class="search_status_conditions">
-                <%= form.select :conditions_selected, {値段が安い順:0,値段が高い順:1}, {}, class: 'selections_conditions_box' %>を
+                <%= form.select :sort_selected, {値段が安い順:0,値段が高い順:1}, {}, class: 'selections_conditions_box' %>を
               </div>
               <div class="search_status_selections">
-                <%= form.select :sort_selected, {全ての商品:0,販売中の商品:1,売切れの商品:2}, {}, class: 'selections_select_box' %>で表示
+                <%= form.select :conditions_selected, {全ての商品:0,販売中の商品:1,売切れの商品:2}, {}, class: 'selections_select_box' %>で表示
               </div>
               <div class="search_status_price">
                 <%= form.label("上限金額") %>
@@ -59,7 +59,7 @@
             </div>
           <% end %>
         </div>
-        <span class="search_bikou">チェックされているサイトより、<br>最大４０〜６０件の情報を抽出し統合します。</span>
+        <span class="search_bikou">・チェックされているサイトより、最大４０〜６０件の情報を抽出し統合します。</span><br>
       </div>
     </div>
 
